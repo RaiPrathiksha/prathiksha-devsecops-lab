@@ -1,0 +1,5 @@
+#SPDX-License-Identifier: MIT-0
+---
+app_name: "DevSecOps Web Server"
+env: "training"  
+# vars file for webserver
