@@ -1,18 +1,18 @@
-name: CI Basics
+name: Raman CI Basics
 
-on:
+on: 
   push:
-    branches:
-      - develop
-  pull_request:
-    branches:
-      - develop
+   branches:
+     - develop
+  #pull_request:
+  # branches:
+  #   - develop
 
 jobs:
   build:
     name: Basic CI Job
     runs-on: ubuntu-latest
-      
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -20,4 +20,31 @@ jobs:
         run: |
           pwd
           ls -la
-                                 
+  lint:
+    name: Lint Placeholder
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Linting will go here"
+  sast:
+    name: SAST - SonarQube Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v2
+        with:
+          projectBaseDir: app
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      
+      - name: SonarQube Quality Gate
+        uses: SonarSource/sonarqube-quality-gate-action@v1
+        with:
+          scanMetadataReportFile: app/.scannerwork/report-task.txt
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+ 
+
